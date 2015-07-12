@@ -2,7 +2,7 @@
 cmake_minimum_required(VERSION 2.8)
 
 # Define project name
-project(opencv_example_project)
+project(opencv_demo_project)
 
 # Find OpenCV, you may need to set OpenCV_DIR variable
 # to the absolute path to the directory containing OpenCVConfig.cmake file
@@ -23,6 +23,8 @@ include_directories(${OpenCV_INCLUDE_DIRS})
 
 # Declare the executable target built from your sources
 add_executable(opencv_example example.cpp)
+add_executable(smoothimg smoothimg.cpp)
 
 # Link your application with OpenCV libraries
 target_link_libraries(opencv_example ${OpenCV_LIBS})
+target_link_libraries(smoothimg ${OpenCV_LIBS})
