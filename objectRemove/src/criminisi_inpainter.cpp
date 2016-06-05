@@ -78,15 +78,20 @@ namespace Inpaint {
         _halfPatchSize = _input.patchSize / 2;
         _halfMatchSize = (int) (_halfPatchSize * 1.25f);
 
-        _input.image.copyTo(_image);
+        // Copy full input image into _image.
+        _input.image.copyTo(_image); 
         _input.targetMask.copyTo(_targetRegion);
 
-        // Initialize regions
+        //Transform the target region into an rectangle region. 
         cv::rectangle(_targetRegion, cv::Rect(0, 0, _targetRegion.cols, _targetRegion.rows), cv::Scalar(0), _halfMatchSize);
 
+        // Generate source region.
         _sourceRegion = 255 - _targetRegion; 
         cv::rectangle(_sourceRegion, cv::Rect(0, 0, _sourceRegion.cols, _sourceRegion.rows), cv::Scalar(0), _halfMatchSize);
-        cv::erode(_sourceRegion, _sourceRegion, cv::getStructuringElement(cv::MORPH_RECT, cv::Size(_halfMatchSize*2+1, _halfMatchSize*2+1)));
+
+        // Erode source region
+        cv::erode(_sourceRegion, _sourceRegion,
+                  cv::getStructuringElement(cv::MORPH_RECT, cv::Size(_halfMatchSize*2+1, _halfMatchSize*2+1)));
 
         if (!_input.sourceMask.empty() && cv::countNonZero(_input.sourceMask) > 0)
         {
