@@ -69,6 +69,13 @@ int main(int argc, char **argv)
 	cv::Mat inputImage = cv::imread(argv[1]);
     // How to check read image ok?
     printf("- Image size w=%d, h=%d.\n", inputImage.cols, inputImage.rows);
+    if (inputImage.cols > 720)
+    {
+        cv::resize(inputImage, inputImage, cv::Size(round(0.5 * inputImage.cols),
+                                                round(0.5 * inputImage.rows)));
+        printf("- After resize, Image size w=%d, h=%d.\n", inputImage.cols, inputImage.rows);
+    }
+
 	ImageInfo ii;
 	ii.leftMouseDown = false;
     ii.rightMouseDown = false;
@@ -171,7 +178,8 @@ int main(int argc, char **argv)
 	}
 
 	cv::imshow("Source", inputImage);
-    cv::imshow("Final", inpainter.image()); // bug here.
+    if (!inpainter.image().empty())
+        cv::imshow("Final", inpainter.image()); // bug here.
 	cv::waitKey(); // wait for key strok forever.
 	//cv::imwrite("Final.png", inpainter.image());
 
