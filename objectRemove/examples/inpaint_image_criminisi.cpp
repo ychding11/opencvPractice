@@ -69,10 +69,10 @@ int main(int argc, char **argv)
 	cv::Mat inputImage = cv::imread(argv[1]);
     // How to check read image ok?
     printf("- Image size w=%d, h=%d.\n", inputImage.cols, inputImage.rows);
-    if (inputImage.cols > 720)
+    while (inputImage.cols > 720 || inputImage.rows > 800)
     {
-        cv::resize(inputImage, inputImage, cv::Size(round(0.5 * inputImage.cols),
-                                                round(0.5 * inputImage.rows)));
+        cv::resize(inputImage, inputImage, cv::Size(round(0.618 * inputImage.cols),
+                                                    round(0.618 * inputImage.rows)));
         printf("- After resize, Image size w=%d, h=%d.\n", inputImage.cols, inputImage.rows);
     }
 
