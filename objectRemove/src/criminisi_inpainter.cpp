@@ -256,8 +256,14 @@ namespace Inpaint {
         cv::Point bestLocation(-1, -1);
         float bestError = std::numeric_limits<float>::max();
 
-        cv::Mat_<cv::Vec3b> targetImagePatch = centeredPatch<PATCHFLAGS>(_image, targetPatchLocation.y, targetPatchLocation.x, _halfMatchSize);
-	    cv::Mat_<uchar> targetMask = centeredPatch<PATCHFLAGS>(_targetRegion, targetPatchLocation.y, targetPatchLocation.x, _halfMatchSize);
+        cv::Mat_<cv::Vec3b> targetImagePatch = centeredPatch<PATCHFLAGS>(_image,
+                                                                        targetPatchLocation.y,
+                                                                        targetPatchLocation.x,
+                                                                        _halfMatchSize);
+	    cv::Mat_<uchar> targetMask = centeredPatch<PATCHFLAGS>(_targetRegion,
+                                                               targetPatchLocation.y,
+                                                               targetPatchLocation.x,
+                                                               _halfMatchSize);
       
         cv::Mat invTargetMask = (targetMask == 0);
         if (useCandidateFilter)
@@ -298,23 +304,22 @@ namespace Inpaint {
         cv::Mat_<uchar> copyMask = centeredPatch<PATCHFLAGS>(_targetRegion, target.y, target.x, _halfPatchSize);
 
 	    centeredPatch<PATCHFLAGS>(_image, source.y, source.x, _halfPatchSize).copyTo(
-		    centeredPatch<PATCHFLAGS>(_image, target.y, target.x, _halfPatchSize), 
-		    copyMask);
+		                    centeredPatch<PATCHFLAGS>(_image, target.y, target.x, _halfPatchSize), 
+		                    copyMask);
 
 	    centeredPatch<PATCHFLAGS>(_isophoteX, source.y, source.x, _halfPatchSize).copyTo(
-		    centeredPatch<PATCHFLAGS>(_isophoteX, target.y, target.x, _halfPatchSize), 
-		    copyMask);		
+		                    centeredPatch<PATCHFLAGS>(_isophoteX, target.y, target.x, _halfPatchSize), 
+		                    copyMask);		
 
 	    centeredPatch<PATCHFLAGS>(_isophoteY, source.y, source.x, _halfPatchSize).copyTo(
-		    centeredPatch<PATCHFLAGS>(_isophoteY, target.y, target.x, _halfPatchSize), 
-		    copyMask);
+		                    centeredPatch<PATCHFLAGS>(_isophoteY, target.y, target.x, _halfPatchSize), 
+		                    copyMask);
 
 	    float cPatch = _confidence.at<float>(target);
 	    centeredPatch<PATCHFLAGS>(_confidence, target.y, target.x, _halfPatchSize).setTo(cPatch, copyMask);
 	
 	    copyMask.setTo(0);
     }
-
 
     void inpaintCriminisi(
         cv::InputArray image,

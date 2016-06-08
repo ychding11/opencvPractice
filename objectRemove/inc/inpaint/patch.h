@@ -2,7 +2,7 @@
    This file is part of Inpaint.
 
    Copyright Christoph Heindl 2014
-
+   Modified by ychding<ych_ding@163.com>
    Inpaint is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
    the Free Software Foundation, either version 3 of the License, or
@@ -26,7 +26,8 @@
 namespace Inpaint {
 
     /** Flags for creating patch. */
-    enum PatchFlags {
+    enum PatchFlags
+    {
         /** No flags. Fastest variant. */
         PATCH_FAST = 0,
         /** Clamp patch to bounds of image. */
@@ -51,7 +52,8 @@ namespace Inpaint {
     cv::Mat topLeftPatch(const cv::Mat &m, int y, int x, int height, int width) 
     {
         // Note, compile time if's, will be optimized away by compiler.
-        if (Flags & PATCH_BOUNDS) {
+        if (Flags & PATCH_BOUNDS)
+        {
             int topx = clamp(x, 0, m.cols - 1);
             int topy = clamp(y, 0, m.rows - 1);
             width -= std::abs(topx - x);
@@ -63,9 +65,12 @@ namespace Inpaint {
             y = topy;
         }
 
-        if (Flags & PATCH_REF) {
+        if (Flags & PATCH_REF)
+        {
             return m(cv::Rect(x, y, width, height));
-        } else {
+        }
+        else
+        {
             uchar *start = const_cast<uchar*>(m.ptr<uchar>(y, x));
             return cv::Mat(height, width, m.type(), start, m.step);        
         }
