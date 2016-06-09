@@ -7,12 +7,12 @@
    it under the terms of the GNU General Public License as published by
    the Free Software Foundation, either version 3 of the License, or
    (at your option) any later version.
-   
+
    Inpaint is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
-   
+
    You should have received a copy of the GNU General Public License
    along with Inpaint.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -49,7 +49,7 @@ void onMouse(int eventType, int x, int y, int flags, void* data)
         cv::Mat &mask = ii.targetMask;
         cv::Scalar color = cv::Scalar(0,250,0);
         cv::circle(mask, cv::Point(x, y), 1, cv::Scalar(255), -1);
-	    ii.displayImage.setTo(color, mask);	    
+	    ii.displayImage.setTo(color, mask);
     }
 	else if (eventType == cv::EVENT_LBUTTONUP)
     {
@@ -58,8 +58,8 @@ void onMouse(int eventType, int x, int y, int flags, void* data)
        point2 = cv::Point(x, y);
        cv::Mat &mask = ii.targetMask;
        cv::Scalar color = cv::Scalar(0,250,0);
-       cv::rectangle(mask, point1, point2, cv::Scalar(255), -1); // -1 means filled. 
-	   ii.displayImage.setTo(color, mask);	    
+       cv::rectangle(mask, point1, point2, cv::Scalar(255), -1); // -1 means filled.
+	   ii.displayImage.setTo(color, mask);
     }
     else if (eventType == cv::EVENT_MOUSEMOVE && beginDraw == true)
     {
@@ -69,7 +69,7 @@ void onMouse(int eventType, int x, int y, int flags, void* data)
        cv::Scalar color = cv::Scalar(0,250,0);
        cv::rectangle(mask, point1, point2, cv::Scalar(255), 1);
 	   ii.displayImage = ii.image.clone();
-	   ii.displayImage.setTo(color, mask);	    
+	   ii.displayImage.setTo(color, mask);
     }
     else if (eventType == cv::EVENT_RBUTTONDOWN)
 		ii.rightMouseDown = true;
@@ -85,7 +85,7 @@ void onMouse(int eventType, int x, int y, int flags, void* data)
     // Generate the mask of the processing image.
     //cv::circle(mask, cv::Point(x, y), ii.displayImage.rows / 60, cv::Scalar(255), -1);
 
-	//ii.displayImage.setTo(color, mask);	    
+	//ii.displayImage.setTo(color, mask);
    // cv::imshow("Image Inpaint", ii.displayImage);
 }
 
@@ -125,13 +125,13 @@ int main(int argc, char **argv)
 	cv::namedWindow("Image Inpaint");
 	cv::setMouseCallback("Image Inpaint", onMouse, &ii);
 	cv::createTrackbar("Patchsize", "Image Inpaint", &ii.patchSize, 50);
-	
+
 	bool done = false;
 	bool editingMode = true;
     int iterations = 0;
 
     Inpaint::CriminisiInpainter inpainter;
-	cv::Mat image;	
+	cv::Mat image;
 
 	while (!done)
     {
@@ -151,7 +151,7 @@ int main(int argc, char **argv)
                 image.setTo(cv::Scalar(0,250,0), inpainter.targetRegion());
                 // Only a single window is displayed.
                 // check the processing result of each iteration.
-               // cv::imshow("Processing", inpainter.image()); 
+               // cv::imshow("Processing", inpainter.image());
 			}
             else
             {
@@ -187,7 +187,7 @@ int main(int argc, char **argv)
                 inpainter.setSourceMask(ii.sourceMask);
                 inpainter.setPatchSize(ii.patchSize);
                 inpainter.initialize();
-			} 
+			}
 			editingMode = !editingMode;
 		}
         else if (key == 'r')
