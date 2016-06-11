@@ -130,7 +130,7 @@ namespace Inpaint {
         \param ap center in first image
         \param bp center in second image
         \param halfPatchSize halfPatchSize Half the patch size. I.e for a 3x3 patch window, set this to 1.
-        \return Comparable rectangles for first, second image. Rectangles are of same size, but anchored top-left
+        \return Comparable rectangles for both images. Rectangles are of same size, but anchored top-left
                 with respect to the given center points.
         */
     inline std::pair<cv::Rect, cv::Rect> comparablePatchRegions(
@@ -143,6 +143,7 @@ namespace Inpaint {
         int top = maximum(-halfPatchSize, -ap.y, -bp.y);
         int bottom = minimum(halfPatchSize + 1, -ap.y + a.rows, -bp.y + b.rows); 
 
+        // Rect determined by <top-left coordinate, width and height>
         std::pair<cv::Rect, cv::Rect> p;
 
         p.first.x = ap.x + left;
@@ -158,7 +159,9 @@ namespace Inpaint {
         return p;
     }
 
-    /** Test if patch goes across the boundary. */
+    /* Test if patch goes across the boundary.
+     * a center point and half patch size determines a patch.
+     */
     inline bool isCenteredPatchCrossingBoundary(cv::Point p, int halfPatchSize, const cv::Mat &img)
     {
         return p.x < halfPatchSize || p.x >= img.cols - halfPatchSize ||
