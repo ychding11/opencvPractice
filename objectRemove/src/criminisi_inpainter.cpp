@@ -111,7 +111,7 @@ namespace Inpaint {
 
 	    for (int i = 0; i < gradX.rows * gradX.cols; ++i)
         {
-		    // Note the isophote corresponds to the gradient rotated by 90°
+		    // Note the isophote corresponds to the gradient rotated by 90?
 		    const cv::Vec3f &vx = gradX(i);
 		    const cv::Vec3f &vy = gradY(i);
 		

@@ -24,6 +24,7 @@
 
 struct ImageInfo
 {
+	ImageInfo() :leftMouseDown(false), rightMouseDown(false), patchSize(9) {}
 	cv::Mat image;
 	cv::Mat targetMask;
     cv::Mat sourceMask;
@@ -36,6 +37,38 @@ struct ImageInfo
 cv::Point point1, point2;
 bool beginDraw = false;
 
+#if 0
+void onMouse(int eventType, int x, int y, int flags, void* data)
+{
+    // reinterpret generic data type to specificed type.
+	ImageInfo &ii = *reinterpret_cast<ImageInfo*>(data);
+
+	if (eventType == cv::EVENT_LBUTTONDOWN)
+    {
+        ii.leftMouseDown = true;
+    }
+	else if (eventType == cv::EVENT_LBUTTONUP)
+    {
+       ii.leftMouseDown = false;
+    }
+    else if (eventType == cv::EVENT_RBUTTONDOWN)
+		ii.rightMouseDown = true;
+    else if (eventType == cv::EVENT_RBUTTONUP)
+		ii.rightMouseDown = false;
+
+    if (!ii.leftMouseDown && !ii.rightMouseDown)
+        return;
+
+    cv::Mat &mask    = ii.leftMouseDown ? ii.targetMask : ii.sourceMask;
+    cv::Scalar color = ii.leftMouseDown ? cv::Scalar(0,250,0) : cv::Scalar(0,250,250);
+
+    // Generate the mask of the processing image.
+    cv::circle(mask, cv::Point(x, y), ii.displayImage.rows / 60, cv::Scalar(255), -1);
+
+	ii.displayImage.setTo(color, mask);
+   // cv::imshow("Image Inpaint", ii.displayImage);
+}
+#else
 void onMouse(int eventType, int x, int y, int flags, void* data)
 {
     // reinterpret generic data type to specificed type.
@@ -48,7 +81,7 @@ void onMouse(int eventType, int x, int y, int flags, void* data)
         point1 = cv::Point(x, y);
         cv::Mat &mask = ii.targetMask;
         cv::Scalar color = cv::Scalar(0,250,0);
-        cv::circle(mask, cv::Point(x, y), 1, cv::Scalar(255), -1);
+        cv::circle(mask, cv::Point(x, y), ii.displayImage.rows / 60, cv::Scalar(255), -1);
 	    ii.displayImage.setTo(color, mask);
     }
 	else if (eventType == cv::EVENT_LBUTTONUP)
@@ -57,7 +90,7 @@ void onMouse(int eventType, int x, int y, int flags, void* data)
        beginDraw = false;
        point2 = cv::Point(x, y);
        cv::Mat &mask = ii.targetMask;
-       cv::Scalar color = cv::Scalar(0,250,0);
+       cv::Scalar color = cv::Scalar(0,180,150);
        cv::rectangle(mask, point1, point2, cv::Scalar(255), -1); // -1 means filled.
 	   ii.displayImage.setTo(color, mask);
     }
@@ -88,6 +121,7 @@ void onMouse(int eventType, int x, int y, int flags, void* data)
 	//ii.displayImage.setTo(color, mask);
    // cv::imshow("Image Inpaint", ii.displayImage);
 }
+#endif
 
 int main(int argc, char **argv)
 {
@@ -108,9 +142,9 @@ int main(int argc, char **argv)
     }
 
 	ImageInfo ii;
-	ii.leftMouseDown = false;
-    ii.rightMouseDown = false;
-	ii.patchSize = 9;
+	//ii.leftMouseDown = false;
+    //ii.rightMouseDown = false;
+	//ii.patchSize = 9;
 
 	ii.image = inputImage.clone();
 	ii.displayImage = ii.image.clone();
