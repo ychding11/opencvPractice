@@ -37,7 +37,7 @@ struct ImageInfo
 cv::Point point1, point2;
 bool beginDraw = false;
 
-#if 0
+#if 1
 void onMouse(int eventType, int x, int y, int flags, void* data)
 {
     // reinterpret generic data type to specificed type.
@@ -142,9 +142,6 @@ int main(int argc, char **argv)
     }
 
 	ImageInfo ii;
-	//ii.leftMouseDown = false;
-    //ii.rightMouseDown = false;
-	//ii.patchSize = 9;
 
 	ii.image = inputImage.clone();
 	ii.displayImage = ii.image.clone();

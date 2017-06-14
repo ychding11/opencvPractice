@@ -28,11 +28,6 @@ namespace Inpaint {
 
     const int PATCHFLAGS = PATCH_BOUNDS;
 
-    CriminisiInpainter::UserSpecified::UserSpecified()
-    {
-        patchSize = 9;
-    }
-
     CriminisiInpainter::CriminisiInpainter()
     { }
 
@@ -68,14 +63,13 @@ namespace Inpaint {
 
     void CriminisiInpainter::initialize()
     {
-        CV_Assert(
-                (_input.image.channels() == 3) &&
-                _input.image.depth() == CV_8U  &&
-                _input.targetMask.size() == _input.image.size() &&
-                (_input.sourceMask.empty() || _input.targetMask.size() == _input.sourceMask.size()) &&
-                _input.patchSize > 0);
+        CV_Assert( (_input.image.channels() == 3) &&
+				   (_input.image.depth() == CV_8U) &&
+				   (_input.targetMask.size() == _input.image.size()) &&
+                   (_input.sourceMask.empty() || _input.targetMask.size() == _input.sourceMask.size()) &&
+                   (_input.patchSize > 0) );
 
-        _halfPatchSize = _input.patchSize / 2;
+        _halfPatchSize = _input.patchSize >> 1;
         _halfMatchSize = (int) (_halfPatchSize * 1.25f);
 
         // Copy full input image into _image.

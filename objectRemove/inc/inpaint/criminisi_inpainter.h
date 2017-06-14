@@ -99,7 +99,7 @@ namespace Inpaint {
             cv::Mat targetMask;
             int patchSize;
 
-            UserSpecified();
+			UserSpecified() : patchSize(9) {};
         };
 
         UserSpecified _input;
