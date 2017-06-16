@@ -198,13 +198,16 @@ int main(int argc, char **argv)
 		cv::imshow("Image Inpaint", image);
 		int key = cv::waitKey(10); // wait for key strok for 10 ms.
 
-		if (key == 'x')
-        {
-            printf("- Done.\n");
-			done = true;
-		}
-        else if (key == 'e')
-        {
+		switch (key)
+		{
+		case 'x':
+			{
+				printf("- Done.\n");
+				done = true;
+			}
+			break;
+		case 'e':
+			{
 			if (editingMode)
             {
 				// Was in editing, now perform
@@ -220,9 +223,10 @@ int main(int argc, char **argv)
                 inpainter.initialize();
 			}
 			editingMode = !editingMode;
-		}
-        else if (key == 'r')
-        {
+			}
+			break;
+		case 'r':
+			{
 			// revert
             printf("- Revert to initial state and set to edit mode.\n");
 			ii.image = inputImage.clone();
@@ -232,12 +236,14 @@ int main(int argc, char **argv)
             ii.sourceMask.create(ii.image.size(), CV_8UC1);
 			ii.sourceMask.setTo(0);
 			editingMode = true;
+			}
+			break;
+		default:
+			{
+			}
+			break;
 		}
-        else
-        {
-            //printf("- Press other keys.\n");
-        }
-	}
+	} // end of loop
 
 	cv::imshow("Source", inputImage);
     if (!inpainter.image().empty())
