@@ -5,3 +5,5 @@ This is an implementation of paper
 
 The main idea is demostrated by the picture extracted from paper.     
 
+- ![inpainting idea](./inpaint_idea.png)
+
