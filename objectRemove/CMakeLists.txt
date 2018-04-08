@@ -18,7 +18,7 @@ if (WIN32)
 	add_definitions("-D_SCL_SECURE_NO_WARNINGS")
 	#set(OpenCV_DIR "c:/Users/dingy/Downloads/opencv/sources/cmake/")
 	#set(OpenCV_DIR "c:/Users/dingy/Downloads/opencv/build/")
-	set (OpenCV_DIR "c:/Users/dingy/Downloads/opencv/build/x64/vc14/lib")
+	set (OpenCV_DIR "c:/opencv/build/x64/vc14/lib")
 	#set (OpenCV_DIR "c:/Users/dingy/Downloads/opencv/build/x86/vc12/lib")
 endif()
 
@@ -27,7 +27,7 @@ find_package(OpenCV REQUIRED)
 
 message ("-- Opencv include dir " ${OpenCV_INCLUDE_DIRS})
 if (WIN32)
-	set (OpenCV_INCLUDE_DIRS "c:/Users/dingy/Downloads/opencv/build/include")
+	set (OpenCV_INCLUDE_DIRS "c:/opencv/build/include")
 endif()
 message ("-- Opencv include dir " ${OpenCV_INCLUDE_DIRS})
 
