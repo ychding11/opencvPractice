@@ -13,26 +13,34 @@ message ("-- CMake Generator " ${CAMKE_GENERATOR})
 set(CMAKE_BUILD_TYPE Debug)
 message("-- Set build type: " ${CMAKE_BUILD_TYPE})
 
+include_directories(${OpenCV_INCLUDE_DIRS} "inc")
+message ("-- Add including directories: into search path." ${OpenCV_INCLUDE_DIRS} )
+
+set (OpenCV_FIND_QUIETLY False)
+message ("-- set  OpenCV_FIND_QUIETLY: "  ${OpenCV_FIND_QUIETLY})
+	
+	
 if (WIN32)
 	#set(OpenCV_STATIC true)
+	message ("-- Win32 Platform ")
+	set (OpenCV_DIR "c:/Users/ding/Documents/opencv/build/")
+	message ("-- set  OpenCV_DIR: ${OpenCV_DIR}")
+	
+	#set (OpenCV_INCLUDE_DIRS "c:/Users/ding/Documents/opencv/build/include")
+	#message ("-- set  OpenCV_INCLUDE_DIRS:  ${OpenCV_INCLUDE_DIRS}")
+	
 	add_definitions("-D_SCL_SECURE_NO_WARNINGS")
-	#set(OpenCV_DIR "c:/Users/dingy/Downloads/opencv/sources/cmake/")
-	#set(OpenCV_DIR "c:/Users/dingy/Downloads/opencv/build/")
-	set (OpenCV_DIR "c:/opencv/build/x64/vc14/lib")
-	#set (OpenCV_DIR "c:/Users/dingy/Downloads/opencv/build/x86/vc12/lib")
+	
 endif()
-
 
 find_package(OpenCV REQUIRED)
+message ("-- Opencv include dir: " ${OpenCV_INCLUDE_DIRS})
+message ("-- Opencv OpenCV_STATIC: " ${OpenCV_STATIC})
+message ("-- Opencv OpenCV_SHARED: " ${OpenCV_SHARED})
+message ("-- Opencv OpenCV_LIBRARIES: " ${OpenCV_LIBRARIES})
+message ("-- Opencv OpenCV_LIBS: "      ${OpenCV_LIBS})
 
-message ("-- Opencv include dir " ${OpenCV_INCLUDE_DIRS})
-if (WIN32)
-	set (OpenCV_INCLUDE_DIRS "c:/opencv/build/include")
-endif()
-message ("-- Opencv include dir " ${OpenCV_INCLUDE_DIRS})
 
-include_directories(${OpenCV_INCLUDE_DIRS} "inc")
-message ("-- Add including directories into search path.")
 
 if(UNIX)
   SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
@@ -44,8 +52,8 @@ add_library(inpaint
 	inc/inpaint/stats.h
 	inc/inpaint/patch.h
 	inc/inpaint/gradient.h
-    	inc/inpaint/integral.h
-    	inc/inpaint/timer.h
+    inc/inpaint/integral.h
+    inc/inpaint/timer.h
 	inc/inpaint/criminisi_inpainter.h
 	inc/inpaint/template_match_candidates.h
 	inc/inpaint/patch_match.h
@@ -53,6 +61,7 @@ add_library(inpaint
 	src/template_match_candidates.cpp
 	src/patch_match.cpp
 )
+#target_link_libraries(inpaint ${OpenCV_LIBRARIES})
 target_link_libraries(inpaint ${OpenCV_LIBRARIES})
 	
 # build Samples
