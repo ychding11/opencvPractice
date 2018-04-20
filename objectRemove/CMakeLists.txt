@@ -9,38 +9,55 @@ project(inpainting)
 ###############################################
 
 
-message ("-- CMake Generator " ${CAMKE_GENERATOR})
+message ("-- CAMKE_GENERATOR: "  ${CMAKE_GENERATOR})
+message ("-- CMAKE_CXX_FLAGS: "  ${CMAKE_CXX_FLAGS})
+message (STATUS "CMAKE_SHARED_LINKER_FLAGS: " ${CMAKE_SHARED_LINKER_FLAGS})
+message (STATUS "CMAKE_STATIC_LINKER_FLAGS:"  ${CMAKE_STATIC_LINKER_FLAGS})
+message (STATUS "CMAKE_EXE_LINKER_FLAGS: "    ${CMAKE_EXE_LINKER_FLAGS})
+
 set(CMAKE_BUILD_TYPE Debug)
-message("-- Set build type: " ${CMAKE_BUILD_TYPE})
-
-include_directories(${OpenCV_INCLUDE_DIRS} "inc")
-message ("-- Add including directories: into search path." ${OpenCV_INCLUDE_DIRS} )
-
-set (OpenCV_FIND_QUIETLY False)
-message ("-- set  OpenCV_FIND_QUIETLY: "  ${OpenCV_FIND_QUIETLY})
-	
+message("-- Set CMAKE_BUILD_TYPE: " ${CMAKE_BUILD_TYPE})
 	
 if (WIN32)
 	#set(OpenCV_STATIC true)
 	message ("-- Win32 Platform ")
-	set (OpenCV_DIR "c:/Users/ding/Documents/opencv/build/")
-	message ("-- set  OpenCV_DIR: ${OpenCV_DIR}")
 	
-	#set (OpenCV_INCLUDE_DIRS "c:/Users/ding/Documents/opencv/build/include")
-	#message ("-- set  OpenCV_INCLUDE_DIRS:  ${OpenCV_INCLUDE_DIRS}")
+	set (OpenCV_DIR "c:/Users/ding/Documents/opencv/build/")
+	message ("-- Set  OpenCV_DIR: ${OpenCV_DIR}")
+
 	
 	add_definitions("-D_SCL_SECURE_NO_WARNINGS")
 	
 endif()
 
+set (OpenCV_FIND_QUIETLY False)
+message ("-- set  OpenCV_FIND_QUIETLY: "  ${OpenCV_FIND_QUIETLY})
 find_package(OpenCV REQUIRED)
-message ("-- Opencv include dir: " ${OpenCV_INCLUDE_DIRS})
 message ("-- Opencv OpenCV_STATIC: " ${OpenCV_STATIC})
 message ("-- Opencv OpenCV_SHARED: " ${OpenCV_SHARED})
-message ("-- Opencv OpenCV_LIBRARIES: " ${OpenCV_LIBRARIES})
-message ("-- Opencv OpenCV_LIBS: "      ${OpenCV_LIBS})
 
+message ("-- OpenCV_INCLUDE_DIRS: ")
+foreach(inc ${OpenCV_INCLUDE_DIRS})
+message ("   ${inc}")        # Prints each item on a separate line
+endforeach()
 
+message ("-- OpenCV_LIBRARIES: ")
+foreach(item ${OpenCV_LIBRARIES})
+#message ("   ${item}")        # Prints each item on a separate line
+endforeach()
+
+message ("-- OpenCV_LIBS: ")
+foreach(item ${OpenCV_LIBS})
+message ("   ${item}")        # Prints each item on a separate line
+endforeach()
+
+#https://cmake.org/cmake/help/v2.8.8/cmake.html#prop_dir:INCLUDE_DIRECTORIES
+include_directories(${OpenCV_INCLUDE_DIRS} "inc")
+get_property (inc_dirs DIRECTORY PROPERTY INCLUDE_DIRECTORIES)
+message ("-- INCLUDE_DIRECTORIES: ")
+foreach(item ${inc_dirs})
+message ("   ${item}")        # Prints each item on a separate line
+endforeach()
 
 if(UNIX)
   SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
@@ -48,7 +65,7 @@ if(UNIX)
 endif(UNIX)
 
 # Build Library
-add_library(inpaint 
+add_library(inpaint STATIC
 	inc/inpaint/stats.h
 	inc/inpaint/patch.h
 	inc/inpaint/gradient.h
@@ -61,8 +78,7 @@ add_library(inpaint
 	src/template_match_candidates.cpp
 	src/patch_match.cpp
 )
-#target_link_libraries(inpaint ${OpenCV_LIBRARIES})
-target_link_libraries(inpaint ${OpenCV_LIBRARIES})
+target_link_libraries(inpaint ${OpenCV_LIBS})
 	
 # build Samples
 add_executable(inpaint_image_criminisi examples/inpaint_image_criminisi.cpp)
